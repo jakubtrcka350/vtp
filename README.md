@@ -1,12 +1,103 @@
-# VTP
+# Firemní web
 
+Next.js website s tmavým designem, česky. Hostováno na Vercel.
 
+---
 
-## Getting started
+## Rychlý start (lokální vývoj)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+```bash
+npm install
+cp .env.example .env.local
+# Vyplňte hodnoty v .env.local
+npm run dev
+```
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+Aplikace poběží na [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Nasazení na Vercel
+
+### 1. Přidejte projekt na Vercel
+1. Přihlaste se na [vercel.com](https://vercel.com)
+2. **Add New → Project** → propojte tento repozitář
+3. Framework: **Next.js** (detekuje automaticky)
+4. Klikněte **Deploy**
+
+### 2. Přidejte Vercel KV (databáze)
+1. Na dashboardu projektu → záložka **Storage**
+2. **Connect Store → KV** → vytvořte nový store
+3. Klikněte **Connect** — env proměnné se přidají automaticky
+
+### 3. Přidejte Vercel Blob (ukládání obrázků)
+1. Na dashboardu projektu → záložka **Storage**
+2. **Connect Store → Blob** → vytvořte nový store
+3. Klikněte **Connect** — `BLOB_READ_WRITE_TOKEN` se přidá automaticky
+
+### 4. Nastavte env proměnné
+V **Settings → Environment Variables** přidejte:
+
+| Proměnná | Popis |
+|---|---|
+| `ADMIN_PASSWORD` | Heslo pro přístup do správy webu (`/sprava`) |
+| `ADMIN_SECRET` | Náhodný tajný řetězec min. 32 znaků (pro podpis tokenů) |
+
+KV a Blob proměnné se přidají automaticky při propojení store.
+
+### 5. Znovu nasaďte
+Po přidání env proměnných klikněte **Redeploy**.
+
+---
+
+## Správa webu (admin panel)
+
+Přejděte na: `https://vas-web.vercel.app/sprava`
+
+- Zadejte heslo (nastavené v `ADMIN_PASSWORD`)
+- **Poptávky** — zobrazí přijaté poptávky z formuláře
+- **Naše práce** — přidejte/smažte realizace (fotka + popis)
+
+Admin panel není indexován vyhledávači.
+
+---
+
+## Přizpůsobení obsahu
+
+Nahraďte placeholdery v těchto souborech:
+
+| Soubor | Co změnit |
+|---|---|
+| `src/app/layout.tsx` | Název firmy, popis pro SEO |
+| `src/components/Navbar.tsx` | Logo/název firmy |
+| `src/components/sections/AboutSection.tsx` | Text o firmě, hodnoty, fotka týmu |
+| `src/components/sections/ServicesSection.tsx` | Název a popis každé služby |
+| `src/components/sections/KontaktSection.tsx` | Telefon, e-mail, adresa |
+| `src/components/sections/PoptavkaSection.tsx` | Statistiky (roky zkušeností, klienti...) |
+
+---
+
+## Struktura projektu
+
+```
+src/
+├── app/
+│   ├── page.tsx              # Hlavní stránka
+│   ├── sprava/page.tsx       # Admin panel
+│   └── api/                  # API endpointy
+├── components/
+│   ├── Navbar.tsx
+│   ├── sections/             # Sekce hlavní stránky
+│   └── admin/                # Komponenty admin panelu
+└── lib/
+    ├── auth.ts               # Autentizace (cookie + HMAC token)
+    ├── kv.ts                 # Přístup k Vercel KV
+    └── types.ts              # TypeScript typy
+```
+
+---
+
+## Původní GitLab README
 
 ## Add your files
 
