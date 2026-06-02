@@ -2,6 +2,8 @@ export interface Work {
   id: string;
   title: string;
   description: string;
+  /** Service category tag shown in the modal label */
+  tag?: string;
   /** All uploaded image URLs (at least 1) */
   images: string[];
   /** URL of the chosen thumbnail — must be present in `images` */

@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "NÁZEV FIRMY — Váš spolehlivý partner",
+  title: "VTP Trčka — Vodoinstalatérství a topenářství",
   description:
-    "Profesionální služby s důrazem na kvalitu a spolehlivost. Kontaktujte nás ještě dnes.",
+    "Odborné vodoinstalatérské a topenářské práce. Instalace kotlů, podlahové vytápění, rekonstrukce koupelen. Nezávazná poptávka zdarma.",
   openGraph: {
-    title: "NÁZEV FIRMY",
-    description: "Profesionální služby s důrazem na kvalitu.",
+    title: "VTP Trčka",
+    description: "Odborné vodoinstalatérství a topenářství.",
     locale: "cs_CZ",
     type: "website",
   },

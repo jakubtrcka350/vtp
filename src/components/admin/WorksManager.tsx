@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
@@ -16,7 +16,7 @@ export default function WorksManager() {
   const [works, setWorks] = useState<Work[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [form, setForm] = useState({ title: "", description: "" });
+  const [form, setForm] = useState({ title: "", description: "", tag: "" });
   const [images, setImages] = useState<ImageItem[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -41,23 +41,15 @@ export default function WorksManager() {
 
   const addFiles = (files: FileList | null) => {
     if (!files) return;
-    const newItems: ImageItem[] = Array.from(files)
+    const newItems = Array.from(files)
       .filter((f) => f.type.startsWith("image/"))
-      .map((file, i) => ({
-        file,
-        preview: URL.createObjectURL(file),
-        // First batch of images: auto-select first as cover
-        isCover: images.length === 0 && i === 0,
-      }));
+      .map((file) => ({ file, preview: URL.createObjectURL(file), isCover: false }));
+    if (newItems.length === 0) return;
     setImages((prev) => {
-      // If there was already a cover keep it; if not, first new image becomes cover
       const hadCover = prev.some((p) => p.isCover);
       return [
         ...prev,
-        ...newItems.map((item, i) => ({
-          ...item,
-          isCover: !hadCover && i === 0 ? true : item.isCover,
-        })),
+        ...newItems.map((item, i) => ({ ...item, isCover: !hadCover && i === 0 })),
       ];
     });
   };
@@ -80,7 +72,7 @@ export default function WorksManager() {
   }, []);
 
   const resetForm = () => {
-    setForm({ title: "", description: "" });
+    setForm({ title: "", description: "", tag: "" });
     setImages([]);
     setError("");
     if (fileRef.current) fileRef.current.value = "";
@@ -206,7 +198,7 @@ export default function WorksManager() {
               ))}
 
               {/* Add photos button */}
-              <label className="w-28 h-20 border border-dashed border-[#2a2a2a] hover:border-[#c8a96e] cursor-pointer flex flex-col items-center justify-center gap-1 text-[#333333] hover:text-[#c8a96e] transition-colors">
+              <label className="w-28 h-20 border border-dashed border-[#2a2a2a] hover:border-[#f06820] cursor-pointer flex flex-col items-center justify-center gap-1 text-[#333333] hover:text-[#f06820] transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
                 </svg>
@@ -228,24 +220,38 @@ export default function WorksManager() {
 
             {images.length > 0 && (
               <p className="text-[#444444] text-xs mt-2">
-                {images.length} {images.length === 1 ? "fotografie" : images.length < 5 ? "fotografie" : "fotografií"} — bílý rámeček = náhledová fotka na hlavní stránce
+                {images.length} {images.length < 5 ? "fotografie" : "fotografií"} — bílý rámeček = náhledová fotka na hlavní stránce
               </p>
             )}
           </div>
 
-          {/* Title */}
-          <div>
-            <label className="block text-xs text-[#555555] mb-2 tracking-wide uppercase">
-              Název *
-            </label>
-            <input
-              type="text"
-              required
-              className="input-field max-w-md"
-              placeholder="Rekonstrukce koupelny..."
-              value={form.title}
-              onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
-            />
+          {/* Title + Tag row */}
+          <div className="grid sm:grid-cols-2 gap-4 max-w-xl">
+            <div>
+              <label className="block text-xs text-[#555555] mb-2 tracking-wide uppercase">
+                Název *
+              </label>
+              <input
+                type="text"
+                required
+                className="input-field"
+                placeholder="Rekonstrukce koupelny..."
+                value={form.title}
+                onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-[#555555] mb-2 tracking-wide uppercase">
+                Kategorie
+              </label>
+              <input
+                type="text"
+                className="input-field"
+                placeholder="Vodo-Topo-Plyn..."
+                value={form.tag}
+                onChange={(e) => setForm((f) => ({ ...f, tag: e.target.value }))}
+              />
+            </div>
           </div>
 
           {/* Description */}
@@ -306,9 +312,16 @@ export default function WorksManager() {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-[#f0f0f0] text-sm">{w.title}</div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <div className="font-medium text-[#f0f0f0] text-sm">{w.title}</div>
+                  {w.tag && (
+                    <span className="text-[#f06820] text-[10px] tracking-wide uppercase bg-[#f06820]/10 px-2 py-0.5">
+                      {w.tag}
+                    </span>
+                  )}
+                </div>
                 <div className="text-[#444444] text-xs mt-1">
-                  {w.images.length} {w.images.length === 1 ? "fotografie" : w.images.length < 5 ? "fotografie" : "fotografií"}
+                  {w.images.length} {w.images.length < 5 ? "fotografie" : "fotografií"}
                 </div>
                 {w.description && (
                   <div className="text-[#555555] text-xs mt-1 line-clamp-2">
@@ -335,3 +348,4 @@ export default function WorksManager() {
     </div>
   );
 }
+
