@@ -1,38 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
-@import "tailwindcss";
 
-/* ── Design tokens ──────────────────────────────────────────────────────── */
-@theme {
-  /* Brand */
-  --color-accent:  #f06820;
-  --color-cobalt:  #0047ab;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  /* Backgrounds */
-  --color-bg:          #0a0a0a;
-  --color-surface:     #111111;
-  --color-surface-2:   #1c1c1c;
-  --color-surface-alt: #0d0d0d;
-
-  /* Borders */
-  --color-border: #262626;
-
-  /* Text */
-  --color-text-primary: #f0f0f0;
-  --color-text-muted:   #9a9a9a;
-
-  /* Typography */
-  --font-sans: "Inter", system-ui, sans-serif;
-
-  /* Animations */
-  --animate-fade-up: fadeUp 0.6s ease-out forwards;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0);    }
-}
-
-/* ── Navbar panel width ─────────────────────────────────────────────────── */
+/* Navbar panel width: wide on mobile (logo needs room), narrower on desktop */
 :root {
   --navbar-panel: 90%;
 }
@@ -40,7 +12,7 @@
   :root { --navbar-panel: 32%; }
 }
 
-/* ── CSS custom properties (for non-Tailwind use) ───────────────────────── */
+/* Color values must match src/lib/colors.ts */
 :root {
   --bg:      #0a0a0a;
   --surface: #111111;
@@ -51,16 +23,15 @@
   --accent:  #f06820;
 }
 
-/* ── Base resets ────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 72px;
 }
 
 body {
@@ -80,7 +51,6 @@ body {
 ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #444444; }
 
-/* ── Component layer ────────────────────────────────────────────────────── */
 @layer components {
   .section-label {
     @apply text-accent text-xs tracking-[0.3em] uppercase font-medium mb-3;
