@@ -60,8 +60,7 @@ export default function KontaktSection() {
               <div>
                 <div className="text-xs text-[#aaaaaa] uppercase tracking-wide mb-1">Adresa</div>
                 <address className="text-[#0a0a0a] not-italic font-medium leading-relaxed">
-                  Ulice 123<br />
-                  000 00 Město
+                  756 12 Horní Lideč
                 </address>
               </div>
             </div>
@@ -72,14 +71,14 @@ export default function KontaktSection() {
       {/* Footer bar — dark */}
       <div className="bg-[#0a0a0a] py-6">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-[#444444]">
+          <p className="text-xs text-white/50">
             © {new Date().getFullYear()} VTP Trčka. Všechna práva vyhrazena.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-xs text-[#444444] hover:text-[#888888] transition-colors">
+            <a href="#" className="text-xs text-white/50 hover:text-[#888888] transition-colors">
               Ochrana osobních údajů
             </a>
-            <a href="#" className="text-xs text-[#444444] hover:text-[#888888] transition-colors">
+            <a href="#" className="text-xs text-white/50 hover:text-[#888888] transition-colors">
               Obchodní podmínky
             </a>
           </div>

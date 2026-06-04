@@ -61,7 +61,7 @@ export default function PoptavkaSection() {
             <h1 className="text-[clamp(2rem,8vw,6rem)] font-bold text-white leading-[1.0] tracking-tight">
               <span className="text-cobalt">Voda</span>, <span className="text-accent">teplo</span> a plyn,
               <br />
-              <span className="text-white/40">jak mají</span>
+              <span className="text-white/40">jak má</span>
               <br />
               vždy být.
             </h1>
@@ -101,18 +101,18 @@ export default function PoptavkaSection() {
             <div className="backdrop-blur-xs p-7 rounded-xl">
               {status === "sent" ? (
                 <div className="flex flex-col items-center justify-center py-14 text-center gap-5">
-                  <div className="w-14 h-14 border border-white/20 flex items-center justify-center">
+                  <div className="w-14 h-14 border border-white/70 flex items-center justify-center">
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                   <div>
                     <h3 className="text-white font-semibold text-lg">Poptávka odeslána!</h3>
-                    <p className="text-[#666666] text-sm mt-2">Ozveme se vám do 24 hodin.</p>
+                    <p className="text-white/50 text-sm mt-2">Ozveme se vám do 24 hodin.</p>
                   </div>
                   <button
                     onClick={() => setStatus("idle")}
-                    className="text-xs text-[#444444] hover:text-white underline underline-offset-4 transition-colors"
+                    className="text-xs text-white/50 hover:text-white underline underline-offset-4 transition-colors"
                   >
                     Odeslat další
                   </button>
@@ -123,32 +123,32 @@ export default function PoptavkaSection() {
                     <h2 className="text-white font-semibold text-base tracking-wide">
                       Nezávazná poptávka
                     </h2>
-                    <p className="text-[#555555] text-xs mt-1">Vyplňte formulář a my se ozveme.</p>
+                    <p className="text-white/40 text-xs mt-1">Vyplňte formulář a my se ozveme.</p>
                   </div>
 
                   <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-[10px] text-white/50 mb-1.5 tracking-widest uppercase">Jméno a příjmení *</label>
-                        <input type="text" required className="input-field bg-white/90" placeholder="Jan Novák"
+                        <input type="text" required className="input-field bg-white/90 text-black" placeholder="Jan Novák"
                           value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} />
                       </div>
                       <div>
                         <label className="block text-[10px] text-white/50 mb-1.5 tracking-widest uppercase">Telefon</label>
-                        <input type="tel" className="input-field bg-white/90" placeholder="+420 123 456 789"
+                        <input type="tel" className="input-field bg-white/90 text-black" placeholder="+420 123 456 789"
                           value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
                       </div>
                     </div>
 
                     <div>
                       <label className="block text-[10px] text-white/50 mb-1.5 tracking-widest uppercase">E-mail *</label>
-                      <input type="email" required className="input-field bg-white/90" placeholder="jan.novak@ukazka.cz"
+                      <input type="email" required className="input-field bg-white/90 text-black" placeholder="jan.novak@ukazka.cz"
                         value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
                     </div>
 
                     <div>
                       <label className="block text-[10px] text-white/50 mb-1.5 tracking-widest uppercase">Popis projektu *</label>
-                      <textarea required rows={4} className="input-field bg-white/90 resize-none"
+                      <textarea required rows={4} className="input-field bg-white/90 resize-none text-black" 
                         placeholder="Potřebuji vyměnit staré potrubí v koupelně a kuchyni, ..."
                         value={form.message} onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))} />
                     </div>

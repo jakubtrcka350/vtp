@@ -143,7 +143,7 @@ export default function ServicesSection() {
                 className={[
                   "group relative overflow-hidden border border-[#2a2a2a] hover:border-cobalt transition-all duration-300",
                   isWide ? "lg:col-span-2" : "",
-                  isFull ? "lg:col-span-3 min-h-[200px]" : "min-h-[300px]",
+                  isFull ? "lg:col-span-3 min-h-[250px]" : "min-h-[300px]",
                 ].join(" ")}
               >
                 {/* Background — slideshow, single photo, or gradient */}
@@ -176,7 +176,7 @@ export default function ServicesSection() {
                     </h3>
                     <p className={[
                       "text-white/60 text-sm leading-relaxed group-hover:text-white/75 transition-colors duration-300",
-                      isFull ? "" : "line-clamp-2",
+                      isFull ? "" : "line-clamp-4",
                     ].join(" ")}>
                       {s.desc}
                     </p>
