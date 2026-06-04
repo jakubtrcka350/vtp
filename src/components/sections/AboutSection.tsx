@@ -1,10 +1,32 @@
+"use client";
+
+import { useInView } from "@/hooks/useInView";
+
+const values = [
+  { title: "Spolehlivost", desc: "Dodržujeme termíny i sliby." },
+  { title: "Kvalita", desc: "Prověřené materiály a postupy." },
+  { title: "Transparentnost", desc: "Žádné skryté náklady." },
+  { title: "Zkušenosti", desc: "25+ let vodoinstalatérství." },
+];
+
 export default function AboutSection() {
+  const { ref: imgRef, inView: imgInView } = useInView<HTMLDivElement>();
+  const { ref: textRef, inView: textInView } = useInView<HTMLDivElement>();
+
   return (
     <section id="o-nas" className="py-28 border-t border-[#e5e5e5] bg-white">
       <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
 
-        {/* Image placeholder */}
-        <div className="relative">
+        {/* Image — slides in from left */}
+        <div
+          ref={imgRef}
+          className="relative overflow-hidden"
+          style={{
+            opacity: imgInView ? 1 : 0,
+            transform: imgInView ? "translateX(0)" : "translateX(-32px)",
+            transition: "opacity 0.8s ease, transform 0.8s ease",
+          }}
+        >
           <div className="aspect-[4/3] bg-[#f5f5f5] border border-[#e0e0e0] flex items-center justify-center overflow-hidden">
             {/* Replace with real team photo: <Image src="/images/tym.jpg" alt="Tým VTP Trčka" fill className="object-cover" /> */}
             <div className="flex flex-col items-center gap-3 text-[#cccccc]">
@@ -19,8 +41,15 @@ export default function AboutSection() {
           <div className="absolute -bottom-2 -right-2 w-16 h-16 border border-[#f06820]/30 pointer-events-none" />
         </div>
 
-        {/* Text */}
-        <div>
+        {/* Text — slides in from right */}
+        <div
+          ref={textRef}
+          style={{
+            opacity: textInView ? 1 : 0,
+            transform: textInView ? "translateX(0)" : "translateX(32px)",
+            transition: "opacity 0.8s ease 0.15s, transform 0.8s ease 0.15s",
+          }}
+        >
           <p className="section-label">O nás</p>
           <div className="section-accent-line" />
           <h2 className="text-3xl md:text-4xl font-bold text-[#0a0a0a] tracking-tight">
@@ -42,13 +71,16 @@ export default function AboutSection() {
           </p>
 
           <div className="mt-10 grid grid-cols-2 gap-4">
-            {[
-              { title: "Spolehlivost", desc: "Dodržujeme termíny i sliby." },
-              { title: "Kvalita", desc: "Prověřené materiály a postupy." },
-              { title: "Transparentnost", desc: "Žádné skryté náklady." },
-              { title: "Zkušenosti", desc: "10+ let vodoinstalatérství." },
-            ].map((v) => (
-              <div key={v.title} className="border-l-2 border-[#f06820]/30 pl-4 py-1 hover:border-[#f06820] transition-colors">
+            {values.map((v, i) => (
+              <div
+                key={v.title}
+                className="border-l-2 border-[#f06820]/30 pl-4 py-1 hover:border-[#f06820] transition-colors"
+                style={{
+                  opacity: textInView ? 1 : 0,
+                  transform: textInView ? "translateY(0)" : "translateY(12px)",
+                  transition: `opacity 0.5s ease ${0.3 + i * 0.1}s, transform 0.5s ease ${0.3 + i * 0.1}s`,
+                }}
+              >
                 <div className="text-sm font-semibold text-[#0a0a0a]">{v.title}</div>
                 <div className="text-xs text-[#888888] mt-0.5">{v.desc}</div>
               </div>

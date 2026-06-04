@@ -23,6 +23,10 @@
   --accent:  #f06820;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -79,7 +83,7 @@ body {
   }
 
   .input-field {
-    @apply w-full bg-[#0f0f0f] border border-[#2a2a2a] text-[#f0f0f0] placeholder-[#444444] px-4 py-3 text-sm outline-none focus:border-white/40 transition-colors duration-200;
+    @apply w-full bg-[#1e1e1e] border border-[#383838] text-[#f0f0f0] placeholder-[#606060] px-4 py-3 text-sm outline-none focus:border-white/50 transition-colors duration-200;
   }
 
   .card {

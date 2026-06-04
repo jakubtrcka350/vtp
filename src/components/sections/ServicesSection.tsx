@@ -1,51 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
-
-const services = [
-  {
-    category: "Voda · Teplo · Plyn",
-    title: "Vodo-topo-plyn",
-    desc: "Kompletní instalace a rozvody vody, topení i plynu. Montáž kotlů, radiátorů, podlahového vytápění, koupelen a plynových spotřebičů. Opravy havárií i plánované rekonstrukce.",
-    photos: [
-      "/images/services/vtp/koupelna.jpeg",
-      "/images/services/vtp/ocel_radiatory.jpeg",
-      "/images/services/vtp/podlah_topeni.jpeg",
-      "/images/services/vtp/poz_potrubi.jpeg",
-    ],
-    gradient: "from-[#0d1520] to-[#080e18]",
-  },
-  {
-    category: "Čištění potrubí",
-    title: "Čištění vodovodního a odpadního potrubí",
-    desc: "Profesionální čištění vodovodního i odpadního potrubí vysokotlakým čištěním. Odstraňujeme usazeniny, ucpávky a inkrustace — bez zbytečného bourání.",
-    photos: ["/images/services/cist_potrubi/cist_potrubi.jpeg"],
-    gradient: "from-[#1a0e08] to-[#110a05]",
-  },
-  {
-    category: "Diagnostika",
-    title: "Kamerové zkoušky",
-    desc: "Inspekce potrubí průmyslovou kamerou. Přesná diagnostika závad, prasklin a ucpávek s videozáznamem — ideální podklad pro opravu i pojistné události.",
-    photos: ["/images/services/diagn/diagn.jpeg"],
-    gradient: "from-[#0f1a0d] to-[#0a1108]",
-  },
-  {
-    category: "Stavební práce",
-    title: "Zednické a obkladačské práce",
-    desc: "Kompletní zednické a obkladačské práce. Obklady a dlažby do koupelen, kuchyní i ostatních prostor. Přesné provedení, kvalitní materiály.",
-    photos: ["/images/services/zedn_prace/zednicke_prace.jpeg"],
-    gradient: "from-[#141420] to-[#0d0d18]",
-  },
-  {
-    category: "Poradenství",
-    title: "Konzultace zdarma",
-    desc: "Nejste si jistí, jaké řešení je pro vás nejlepší? Poradíme vám zdarma a bez závazků. Zavolejte nebo napište.",
-    photos: ["/images/services/consult/handshake.jpg"],
-    gradient: "from-[#1a1208] to-[#0f0d05]",
-    cta: true,
-  },
-];
+import Link from "next/link";
+import { services } from "@/lib/services";
+import { useInView } from "@/hooks/useInView";
 
 // Handles static photo, auto-cycling slideshow (2+ photos), or gradient fallback.
 // Renders both the images and the dot indicators so both stay in sync with idx.
@@ -102,19 +60,18 @@ function CardBackground({
 }
 
 export default function ServicesSection() {
+  const { ref: headRef, inView: headInView } = useInView<HTMLDivElement>();
+  const { ref: gridRef, inView: gridInView } = useInView<HTMLDivElement>();
+
   return (
     <section id="sluzby" className="py-28 border-t border-white/[0.05] relative overflow-hidden bg-white">
-        {/*
-        <div className="absolute inset-0">
-              <Image src="/images/hero.jpeg" alt="dsada" fill className="object-cover" priority />
-              <div className="absolute inset-0 bg-[#080808]/80" />
-        </div>
-        */}
-        
         <div className="max-w-6xl mx-auto px-6">
 
         {/* Heading */}
-        <div className="mb-14">
+        <div
+          ref={headRef}
+          className={`mb-14 transition-all duration-700 ${headInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}
+        >
           <p className="section-label">Služby</p>
           <div className="section-accent-line" />
           <h2 className="section-heading text-black">Co umíme.</h2>
@@ -124,28 +81,20 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        {/*
-          Bento grid — 3 cols on lg, 2 on md, 1 on mobile.
-
-          lg:
-            Row 1:  [card 0 – col-span-2] [card 1]
-            Row 2:  [card 2]  [card 3 – col-span-2]
-            Row 3:  [card 4 – col-span-3, CTA strip]
-        */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {services.map((s, i) => {
             const isWide = i === 0 || i === 3;
             const isFull = i === 4;
 
-            return (
-              <div
-                key={i}
-                className={[
-                  "group relative overflow-hidden border border-[#2a2a2a] hover:border-cobalt transition-all duration-300",
-                  isWide ? "lg:col-span-2" : "",
-                  isFull ? "lg:col-span-3 min-h-[250px]" : "min-h-[300px]",
-                ].join(" ")}
-              >
+            const cardClass = [
+              "group relative overflow-hidden border border-[#2a2a2a] transition-all duration-300",
+              isWide ? "lg:col-span-2" : "",
+              isFull ? "lg:col-span-3 min-h-[250px]" : "min-h-[300px]",
+              !s.cta ? "hover:border-cobalt cursor-pointer" : "",
+            ].join(" ");
+
+            const inner = (
+              <>
                 {/* Background — slideshow, single photo, or gradient */}
                 <CardBackground photos={s.photos} gradient={s.gradient} title={s.title} />
 
@@ -164,6 +113,18 @@ export default function ServicesSection() {
                     {s.category}
                   </span>
                 </div>
+
+                {/* "Více" hint — top right, only on linkable cards */}
+                {!s.cta && (
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="bg-black/60 text-white/70 text-[10px] tracking-widest uppercase px-2.5 py-1 backdrop-blur-sm flex items-center gap-1">
+                      Více
+                      <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </div>
+                )}
 
                 {/* Text overlay — bottom */}
                 <div className={[
@@ -186,12 +147,26 @@ export default function ServicesSection() {
                     <a
                       href="#poptavka"
                       className="btn-primary whitespace-nowrap flex-shrink-0 self-start sm:self-auto"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       Poptat konzultaci
                     </a>
                   )}
                 </div>
-              </div>
+              </>
+            );
+
+            const animStyle = {
+              transitionDelay: gridInView ? `${i * 90}ms` : "0ms",
+              opacity: gridInView ? 1 : 0,
+              transform: gridInView ? "translateY(0)" : "translateY(24px)",
+              transition: "opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease",
+            };
+
+            return s.cta ? (
+              <div key={i} className={cardClass} style={animStyle}>{inner}</div>
+            ) : (
+              <Link key={i} href={`/sluzby/${s.slug}`} className={cardClass} style={animStyle}>{inner}</Link>
             );
           })}
         </div>

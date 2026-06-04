@@ -1,11 +1,21 @@
+"use client";
+
+import { useInView } from "@/hooks/useInView";
+
 export default function KontaktSection() {
+  const { ref: headRef, inView: headInView } = useInView<HTMLDivElement>();
+  const { ref: blocksRef, inView: blocksInView } = useInView<HTMLDivElement>();
+
   return (
     <footer id="kontakt" className="border-t border-[#e5e5e5]">
 
       {/* Contact info strip — white */}
       <div className="bg-white py-20">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="mb-12">
+          <div
+            ref={headRef}
+            className={`mb-12 transition-all duration-700 ${headInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}
+          >
             <p className="text-[#f06820] text-xs tracking-[0.3em] uppercase mb-4 font-medium">
               Kontakt
             </p>
@@ -14,9 +24,9 @@ export default function KontaktSection() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div ref={blocksRef} className="grid md:grid-cols-3 gap-8">
             {/* Phone */}
-            <div className="flex gap-4">
+            <div className="flex gap-4" style={{ opacity: blocksInView ? 1 : 0, transform: blocksInView ? "translateY(0)" : "translateY(20px)", transition: "opacity 0.6s ease 0s, transform 0.6s ease 0s" }}>
               <div className="w-10 h-10 border border-[#e0e0e0] hover:border-[#0047AB]/40 flex items-center justify-center flex-shrink-0 text-[#f06820] transition-colors duration-200">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -35,7 +45,7 @@ export default function KontaktSection() {
             </div>
 
             {/* Email */}
-            <div className="flex gap-4">
+            <div className="flex gap-4" style={{ opacity: blocksInView ? 1 : 0, transform: blocksInView ? "translateY(0)" : "translateY(20px)", transition: "opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s" }}>
               <div className="w-10 h-10 border border-[#e0e0e0] hover:border-[#0047AB]/40 flex items-center justify-center flex-shrink-0 text-[#f06820] transition-colors duration-200">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -50,7 +60,7 @@ export default function KontaktSection() {
             </div>
 
             {/* Address */}
-            <div className="flex gap-4">
+            <div className="flex gap-4" style={{ opacity: blocksInView ? 1 : 0, transform: blocksInView ? "translateY(0)" : "translateY(20px)", transition: "opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s" }}>
               <div className="w-10 h-10 border border-[#e0e0e0] hover:border-[#0047AB]/40 flex items-center justify-center flex-shrink-0 text-[#f06820] transition-colors duration-200">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -70,18 +80,10 @@ export default function KontaktSection() {
 
       {/* Footer bar — dark */}
       <div className="bg-[#0a0a0a] py-6">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-white/50">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-xs text-white/50 text-center md:text-left">
             © {new Date().getFullYear()} VTP Trčka. Všechna práva vyhrazena.
           </p>
-          <div className="flex gap-6">
-            <a href="#" className="text-xs text-white/50 hover:text-[#888888] transition-colors">
-              Ochrana osobních údajů
-            </a>
-            <a href="#" className="text-xs text-white/50 hover:text-[#888888] transition-colors">
-              Obchodní podmínky
-            </a>
-          </div>
         </div>
       </div>
     </footer>

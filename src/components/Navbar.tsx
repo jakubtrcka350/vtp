@@ -28,7 +28,7 @@ export default function Navbar() {
       {/* Dark right-side background */}
       <div
         className={`absolute inset-0 transition-colors duration-300 ${
-          scrolled || menuOpen ? "bg-[#080808]/95 backdrop-blur-sm" : "bg-transparent"
+          scrolled || menuOpen ? "bg-[#080808]/80 backdrop-blur-sm" : "bg-transparent"
         }`}
       />
 
@@ -64,7 +64,7 @@ export default function Navbar() {
             against the diagonal edge at any viewport width or zoom level.
             pr accounts for the diagonal slope (60px over 90px → ~30px at midheight) */}
         <div
-          className="absolute inset-y-0 left-0 flex items-center justify-end pr-[44px]"
+          className="absolute inset-y-0 left-0 flex items-center justify-end pr-[72px]"
           style={{ width: "var(--navbar-panel)" }}
         >
           <a
@@ -76,7 +76,7 @@ export default function Navbar() {
               alt="VTP Trčka"
               width={1100}
               height={1000}
-              className="h-[115px] w-auto object-contain"
+              className="h-[58px] w-auto object-contain"
               priority
             />
           </a>
@@ -91,7 +91,7 @@ export default function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
-                className="text-lg text-[#777777] hover:text-white transition-colors duration-200 tracking-wide"
+                className="text-lg text-white hover:text-[#777777] transition-colors duration-200 tracking-wide"
               >
                 {l.label}
               </a>
@@ -109,8 +109,10 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen((o) => !o)}
-            className="lg:hidden p-2 text-[#777777] hover:text-white transition-colors"
-            aria-label="Otevřít menu"
+            className="lg:hidden p-3 text-white hover:text-[#777777] transition-colors"
+            aria-label={menuOpen ? "Zavřít menu" : "Otevřít menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
           >
             <div className="w-5 flex flex-col gap-1.5">
               <span className={`block h-px bg-current transition-all duration-300 origin-center ${menuOpen ? "rotate-45 translate-y-[7px]" : ""}`} />
@@ -122,14 +124,14 @@ export default function Navbar() {
       </div>
 
       {/* Mobile menu */}
-      <div className={`lg:hidden overflow-hidden transition-all duration-300 ${menuOpen ? "max-h-96 border-b border-white/[0.06]" : "max-h-0"}`}>
+      <div id="mobile-menu" className={`lg:hidden overflow-hidden transition-all duration-300 ${menuOpen ? "max-h-96 border-b border-white/[0.06]" : "max-h-0"}`}>
         <nav className="px-6 pb-6 pt-2 flex flex-col gap-4 bg-[#080808]/95 backdrop-blur-sm">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setMenuOpen(false)}
-              className="text-sm text-[#777777] hover:text-white transition-colors py-1"
+              className="text-sm text-white hover:text-[#777777] transition-colors py-1"
             >
               {l.label}
             </a>

@@ -58,19 +58,23 @@ export default function AdminLogin() {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
+            <label htmlFor="password" className="block text-xs text-[#888888] mb-2 tracking-wide uppercase">
+              Heslo
+            </label>
             <input
+              id="password"
               type="password"
               required
               autoFocus
               className="input-field w-full"
-              placeholder="Heslo"
+              placeholder="Zadejte heslo..."
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
           {error && (
-            <p className="text-red-400 text-xs text-center">{error}</p>
+            <p role="alert" className="text-red-400 text-xs text-center">{error}</p>
           )}
 
           <button
