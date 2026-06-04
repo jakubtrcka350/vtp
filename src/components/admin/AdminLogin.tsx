@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -35,7 +35,7 @@ export default function AdminLogin() {
         <div className="mb-8 text-center">
           <div className="w-12 h-12 border border-[#262626] flex items-center justify-center mx-auto mb-6">
             <svg
-              className="w-5 h-5 text-[#c8a96e]"
+              className="w-5 h-5 text-[#f06820]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -58,19 +58,23 @@ export default function AdminLogin() {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
+            <label htmlFor="password" className="block text-xs text-[#888888] mb-2 tracking-wide uppercase">
+              Heslo
+            </label>
             <input
+              id="password"
               type="password"
               required
               autoFocus
               className="input-field w-full"
-              placeholder="Heslo"
+              placeholder="Zadejte heslo..."
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
           {error && (
-            <p className="text-red-400 text-xs text-center">{error}</p>
+            <p role="alert" className="text-red-400 text-xs text-center">{error}</p>
           )}
 
           <button
@@ -89,3 +93,4 @@ export default function AdminLogin() {
     </div>
   );
 }
+

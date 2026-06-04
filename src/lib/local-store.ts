@@ -40,6 +40,13 @@ export function localAddWork(work: Work): void {
   writeDB(db);
 }
 
+export function localUpdateWork(work: Work): void {
+  const db = readDB();
+  const idx = db.works.findIndex((w) => w.id === work.id);
+  if (idx !== -1) db.works[idx] = work;
+  writeDB(db);
+}
+
 export function localDeleteWork(id: string): void {
   const db = readDB();
   db.works = db.works.filter((w) => w.id !== id);

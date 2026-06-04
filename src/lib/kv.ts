@@ -2,6 +2,7 @@ import type { Work, Inquiry } from "./types";
 import {
   localGetWorks,
   localAddWork,
+  localUpdateWork,
   localDeleteWork,
   localGetInquiries,
   localAddInquiry,
@@ -65,6 +66,13 @@ export async function addWork(work: Work): Promise<void> {
   const kv = await getKV();
   await kv.hset(`work:${work.id}`, serializeWork(work));
   await kv.sadd("works", work.id);
+}
+
+export async function updateWork(work: Work): Promise<void> {
+  if (!kvAvailable()) return localUpdateWork(work);
+
+  const kv = await getKV();
+  await kv.hset(`work:${work.id}`, serializeWork(work));
 }
 
 export async function deleteWork(id: string): Promise<void> {
