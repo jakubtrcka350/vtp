@@ -5,11 +5,12 @@ import type { Work } from "@/lib/types";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   if (!isAuthed(req))
     return NextResponse.json({ error: "Nepřihlášen." }, { status: 401 });
 
+  const { id } = await params;
   const { title, description, tag, images, coverImage, createdAt } = await req.json();
 
   if (!title || !Array.isArray(images) || images.length === 0 || !coverImage) {
@@ -20,7 +21,7 @@ export async function PUT(
   }
 
   const work: Work = {
-    id: params.id,
+    id,
     title: String(title).trim(),
     description: description ? String(description).trim() : "",
     tag: tag ? String(tag).trim() : undefined,
@@ -35,11 +36,12 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   if (!isAuthed(req))
     return NextResponse.json({ error: "Nepřihlášen." }, { status: 401 });
 
-  await deleteWork(params.id);
+  const { id } = await params;
+  await deleteWork(id);
   return NextResponse.json({ ok: true });
 }
