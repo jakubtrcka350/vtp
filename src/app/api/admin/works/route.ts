@@ -18,9 +18,19 @@ export async function POST(req: NextRequest) {
 
   const { title, description, tag, images, coverImage } = await req.json();
 
-  if (!title || !Array.isArray(images) || images.length === 0 || !coverImage) {
+  const imageList: string[] = Array.isArray(images) ? images.map(String) : [];
+
+  if (!title || imageList.length === 0 || !coverImage) {
     return NextResponse.json(
       { error: "Název, obrázky a náhledová fotka jsou povinné." },
+      { status: 400 }
+    );
+  }
+
+  // coverImage must be one of the submitted images (prevents orphaned references)
+  if (!imageList.includes(String(coverImage))) {
+    return NextResponse.json(
+      { error: "Náhledová fotka musí být jedním z nahraných obrázků." },
       { status: 400 }
     );
   }
@@ -30,7 +40,7 @@ export async function POST(req: NextRequest) {
     title: String(title).trim(),
     description: description ? String(description).trim() : "",
     tag: tag ? String(tag).trim() : undefined,
-    images: images.map(String),
+    images: imageList,
     coverImage: String(coverImage),
     createdAt: Date.now(),
   };

@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthed } from "@/lib/auth";
 
+const MIME_TO_EXT: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/jpg":  "jpg",
+  "image/png":  "png",
+  "image/webp": "webp",
+  "image/gif":  "gif",
+  "image/avif": "avif",
+};
+
 function blobAvailable(): boolean {
   return !!process.env.BLOB_READ_WRITE_TOKEN;
 }
@@ -15,11 +24,14 @@ export async function POST(req: NextRequest) {
   if (!file)
     return NextResponse.json({ error: "Chybí soubor." }, { status: 400 });
 
-  if (!file.type.startsWith("image/"))
+  // Validate MIME type against allowlist — never trust the client-supplied filename
+  const ext = MIME_TO_EXT[file.type];
+  if (!ext) {
     return NextResponse.json(
-      { error: "Povoleny jsou pouze obrázky." },
+      { error: "Povolené formáty: JPEG, PNG, WebP, GIF, AVIF." },
       { status: 400 }
     );
+  }
 
   if (file.size > 10 * 1024 * 1024)
     return NextResponse.json(
@@ -30,7 +42,8 @@ export async function POST(req: NextRequest) {
   // ── Production: Vercel Blob ───────────────────────────────────────────────
   if (blobAvailable()) {
     const { put } = await import("@vercel/blob");
-    const blob = await put(`works/${Date.now()}-${file.name}`, file, {
+    // Safe filename built from timestamp + server-validated extension only
+    const blob = await put(`works/${Date.now()}.${ext}`, file, {
       access: "public",
     });
     return NextResponse.json({ url: blob.url });
@@ -43,7 +56,6 @@ export async function POST(req: NextRequest) {
   const uploadsDir = join(process.cwd(), "public", "uploads");
   await mkdir(uploadsDir, { recursive: true });
 
-  const ext = file.name.split(".").pop() ?? "jpg";
   const filename = `${Date.now()}.${ext}`;
   const bytes = await file.arrayBuffer();
   await writeFile(join(uploadsDir, filename), Buffer.from(bytes));
