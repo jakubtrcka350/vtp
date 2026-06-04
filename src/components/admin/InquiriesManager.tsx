@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import type { Inquiry } from "@/lib/types";
@@ -38,7 +38,7 @@ export default function InquiriesManager() {
       <div className="flex items-center gap-3 mb-8">
         <h2 className="text-lg font-semibold text-[#f0f0f0]">Poptávky</h2>
         {unread > 0 && (
-          <span className="bg-[#c8a96e] text-[#0a0a0a] text-xs font-bold px-2 py-0.5 rounded-full">
+          <span className="bg-[#f06820] text-[#0a0a0a] text-xs font-bold px-2 py-0.5 rounded-full">
             {unread} nové
           </span>
         )}
@@ -69,7 +69,7 @@ export default function InquiriesManager() {
             <div
               key={i.id}
               className={`bg-[#111111] border p-5 transition-colors ${
-                i.read ? "border-[#1a1a1a]" : "border-[#c8a96e]/30"
+                i.read ? "border-[#1a1a1a]" : "border-[#f06820]/30"
               }`}
             >
               <div className="flex items-start justify-between gap-4">
@@ -79,7 +79,7 @@ export default function InquiriesManager() {
                       {i.name}
                     </span>
                     {!i.read && (
-                      <span className="text-[10px] bg-[#c8a96e]/20 text-[#c8a96e] px-2 py-0.5 font-medium tracking-wide uppercase">
+                      <span className="text-[10px] bg-[#f06820]/20 text-[#f06820] px-2 py-0.5 font-medium tracking-wide uppercase">
                         Nová
                       </span>
                     )}
@@ -97,7 +97,7 @@ export default function InquiriesManager() {
                   <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
                     <a
                       href={`mailto:${i.email}`}
-                      className="text-xs text-[#c8a96e] hover:underline"
+                      className="text-xs text-[#f06820] hover:underline"
                     >
                       {i.email}
                     </a>
@@ -167,3 +167,4 @@ export default function InquiriesManager() {
     </div>
   );
 }
+

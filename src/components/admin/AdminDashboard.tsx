@@ -1,14 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import WorksManager from "./WorksManager";
-import InquiriesManager from "./InquiriesManager";
-
-type Tab = "works" | "inquiries";
 
 export default function AdminDashboard() {
-  const [tab, setTab] = useState<Tab>("inquiries");
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -19,47 +14,26 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Top bar */}
-      <div className="border-b border-[#1a1a1a] bg-[#080808] sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <span className="font-semibold text-[#f0f0f0] text-sm tracking-wide">
-              Správa webu
-            </span>
-            <div className="flex gap-1">
-              <button
-                onClick={() => setTab("inquiries")}
-                className={`px-4 py-1.5 text-xs font-medium transition-colors ${
-                  tab === "inquiries"
-                    ? "bg-[#1c1c1c] text-[#f0f0f0]"
-                    : "text-[#555555] hover:text-[#888888]"
-                }`}
-              >
-                Poptávky
-              </button>
-              <button
-                onClick={() => setTab("works")}
-                className={`px-4 py-1.5 text-xs font-medium transition-colors ${
-                  tab === "works"
-                    ? "bg-[#1c1c1c] text-[#f0f0f0]"
-                    : "text-[#555555] hover:text-[#888888]"
-                }`}
-              >
-                Naše práce
-              </button>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
+      <div className="border-b border-[#2a2a2a] bg-[#141414] sticky top-0 z-10">
+        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+          <span className="font-semibold text-[#f0f0f0] text-sm tracking-wide">
+            Správa webu
+          </span>
+          <div className="flex items-center gap-1">
             <a
               href="/"
               target="_blank"
-              className="text-xs text-[#555555] hover:text-[#888888] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-[#888888] hover:text-[#f0f0f0] transition-colors px-3 py-2"
             >
-              Zobrazit web ↗
+              Zobrazit web
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
             </a>
+            <div className="w-px h-4 bg-[#2a2a2a]" />
             <button
               onClick={handleLogout}
-              className="text-xs text-[#555555] hover:text-red-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-[#888888] hover:text-red-400 transition-colors px-3 py-2"
             >
               Odhlásit se
             </button>
@@ -67,9 +41,8 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex-1 max-w-5xl mx-auto w-full px-6 py-10">
-        {tab === "works" ? <WorksManager /> : <InquiriesManager />}
+        <WorksManager />
       </div>
     </div>
   );

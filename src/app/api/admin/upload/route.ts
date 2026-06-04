@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyToken, COOKIE_NAME } from "@/lib/auth";
-
-function isAuthed(req: NextRequest): boolean {
-  const token = req.cookies.get(COOKIE_NAME)?.value;
-  return !!token && verifyToken(token);
-}
+import { isAuthed } from "@/lib/auth";
 
 function blobAvailable(): boolean {
   return !!process.env.BLOB_READ_WRITE_TOKEN;

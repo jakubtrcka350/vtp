@@ -1,100 +1,174 @@
-const services = [
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-      </svg>
-    ),
-    title: "Služba 1",
-    desc: "Zde bude popis první nabízené služby. Doplňte konkrétní informace o tom, co nabízíte.",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-    title: "Služba 2",
-    desc: "Zde bude popis druhé nabízené služby. Doplňte konkrétní informace o tom, co nabízíte.",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    ),
-    title: "Služba 3",
-    desc: "Zde bude popis třetí nabízené služby. Doplňte konkrétní informace o tom, co nabízíte.",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-    ),
-    title: "Služba 4",
-    desc: "Zde bude popis čtvrté nabízené služby. Doplňte konkrétní informace o tom, co nabízíte.",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
-    title: "Služba 5",
-    desc: "Zde bude popis páté nabízené služby. Doplňte konkrétní informace o tom, co nabízíte.",
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-    title: "Konzultace",
-    desc: "Poradíme vám zdarma a bez závazků. Kontaktujte nás a společně najdeme nejlepší řešení.",
-  },
-];
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { services } from "@/lib/services";
+import { useInView } from "@/hooks/useInView";
+
+// Handles static photo, auto-cycling slideshow (2+ photos), or gradient fallback.
+// Renders both the images and the dot indicators so both stay in sync with idx.
+function CardBackground({
+  photos,
+  gradient,
+  title,
+}: {
+  photos: string[];
+  gradient: string;
+  title: string;
+}) {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    if (photos.length < 2) return;
+    const id = setInterval(() => setIdx((i) => (i + 1) % photos.length), 4000);
+    return () => clearInterval(id);
+  }, [photos.length]);
+
+  if (photos.length === 0) {
+    return <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />;
+  }
+
+  return (
+    <>
+      {photos.map((src, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={src}
+          src={src}
+          alt={i === 0 ? title : ""}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            i === idx ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      ))}
+
+      {/* Dot indicators — only visible when there are multiple photos */}
+      {photos.length > 1 && (
+        <div className="absolute top-3 right-3 z-10 flex gap-1">
+          {photos.map((_, j) => (
+            <div
+              key={j}
+              className={`h-0.5 rounded-full transition-all duration-500 ${
+                j === idx ? "w-4 bg-white" : "w-1.5 bg-white/30"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
 
 export default function ServicesSection() {
+  const { ref: headRef, inView: headInView } = useInView<HTMLDivElement>();
+  const { ref: gridRef, inView: gridInView } = useInView<HTMLDivElement>();
+
   return (
-    <section id="sluzby" className="py-28 border-t border-white/[0.05] bg-[#0d0d0d]">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="mb-14">
+    <section id="sluzby" className="py-28 border-t border-white/[0.05] relative overflow-hidden bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+
+        {/* Heading */}
+        <div
+          ref={headRef}
+          className={`mb-14 transition-all duration-700 ${headInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}
+        >
           <p className="section-label">Služby</p>
           <div className="section-accent-line" />
-          <h2 className="section-heading">Co umíme.</h2>
+          <h2 className="section-heading text-black">Co umíme.</h2>
           <p className="section-subheading">
-            Nabízíme komplexní řešení pro vaše potřeby. Každou zakázku přistupujeme individuálně.
+            Voda, teplo, plyn, čištění potrubí, kamerové zkoušky i stavební práce.
+            Každou zakázku přistupujeme individuálně.
           </p>
         </div>
 
-        {/* Grid separated by 1px white/dark lines */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.05]">
-          {services.map((s, i) => (
-            <div
-              key={i}
-              className="bg-[#0d0d0d] p-8 group hover:bg-[#111111] transition-colors duration-300 relative"
-            >
-              {/* Top border on hover */}
-              <div className="absolute top-0 left-0 right-0 h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {services.map((s, i) => {
+            const isWide = i === 0 || i === 3;
+            const isFull = i === 4;
 
-              <div className="text-white/30 group-hover:text-white/60 mb-5 transition-colors duration-300">
-                {s.icon}
-              </div>
-              <h3 className="font-semibold text-white mb-3 text-base">{s.title}</h3>
-              <p className="text-[#555555] text-sm leading-relaxed group-hover:text-[#777777] transition-colors duration-300">
-                {s.desc}
-              </p>
-            </div>
-          ))}
-        </div>
+            const cardClass = [
+              "group relative overflow-hidden border border-[#2a2a2a] transition-all duration-300",
+              isWide ? "lg:col-span-2" : "",
+              isFull ? "lg:col-span-3 min-h-[250px]" : "min-h-[300px]",
+              !s.cta ? "hover:border-cobalt cursor-pointer" : "",
+            ].join(" ");
 
-        {/* CTA */}
-        <div className="mt-14 text-center">
-          <a href="#poptavka" className="btn-primary">
-            Nezávazně poptat
-          </a>
+            const inner = (
+              <>
+                {/* Background — slideshow, single photo, or gradient */}
+                <CardBackground photos={s.photos} gradient={s.gradient} title={s.title} />
+
+                {/* Scrim — gradient from bottom so text stays readable */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+
+                {/* Hover accent line */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-px scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
+                  style={{ background: "linear-gradient(to right, #f06820, #0047AB)" }}
+                />
+
+                {/* Category badge — top left */}
+                <div className="absolute top-3 left-3">
+                  <span className="bg-black/60 text-[#f06820] text-[10px] tracking-[0.2em] uppercase px-2.5 py-1 font-medium backdrop-blur-sm">
+                    {s.category}
+                  </span>
+                </div>
+
+                {/* "Více" hint — top right, only on linkable cards */}
+                {!s.cta && (
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="bg-black/60 text-white/70 text-[10px] tracking-widest uppercase px-2.5 py-1 backdrop-blur-sm flex items-center gap-1">
+                      Více
+                      <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </div>
+                )}
+
+                {/* Text overlay — bottom */}
+                <div className={[
+                  "absolute bottom-0 left-0 right-0 p-5",
+                  isFull ? "flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4" : "",
+                ].join(" ")}>
+                  <div>
+                    <h3 className="font-semibold text-white text-base leading-snug mb-1.5">
+                      {s.title}
+                    </h3>
+                    <p className={[
+                      "text-white/60 text-sm leading-relaxed group-hover:text-white/75 transition-colors duration-300",
+                      isFull ? "" : "line-clamp-4",
+                    ].join(" ")}>
+                      {s.desc}
+                    </p>
+                  </div>
+
+                  {s.cta && (
+                    <a
+                      href="#poptavka"
+                      className="btn-primary whitespace-nowrap flex-shrink-0 self-start sm:self-auto"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      Poptat konzultaci
+                    </a>
+                  )}
+                </div>
+              </>
+            );
+
+            const animStyle = {
+              transitionDelay: gridInView ? `${i * 90}ms` : "0ms",
+              opacity: gridInView ? 1 : 0,
+              transform: gridInView ? "translateY(0)" : "translateY(24px)",
+              transition: "opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease",
+            };
+
+            return s.cta ? (
+              <div key={i} className={cardClass} style={animStyle}>{inner}</div>
+            ) : (
+              <Link key={i} href={`/sluzby/${s.slug}`} className={cardClass} style={animStyle}>{inner}</Link>
+            );
+          })}
         </div>
       </div>
     </section>

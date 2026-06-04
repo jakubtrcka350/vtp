@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "NÁZEV FIRMY — Váš spolehlivý partner",
+  title: "VTP Trčka — Vodoinstalatérství a topenářství",
   description:
-    "Profesionální služby s důrazem na kvalitu a spolehlivost. Kontaktujte nás ještě dnes.",
+    "Odborné vodoinstalatérské a topenářské práce. Instalace kotlů, podlahové vytápění, rekonstrukce koupelen. Nezávazná poptávka zdarma.",
   openGraph: {
-    title: "NÁZEV FIRMY",
-    description: "Profesionální služby s důrazem na kvalitu.",
+    title: "VTP Trčka",
+    description: "Odborné vodoinstalatérství a topenářství.",
     locale: "cs_CZ",
     type: "website",
   },
@@ -20,7 +20,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="cs">
-      <body className="bg-bg text-text-primary antialiased">{children}</body>
+      <body className="bg-bg text-text-primary antialiased">
+        {/* Skip to main content — visible on keyboard focus only */}
+        <a
+          href="#poptavka"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:bg-white focus:text-[#0a0a0a] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:shadow-lg"
+        >
+          Přeskočit na obsah
+        </a>
+        {children}
+      </body>
     </html>
   );
 }
