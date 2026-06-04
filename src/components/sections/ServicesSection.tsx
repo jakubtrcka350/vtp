@@ -156,11 +156,11 @@ export default function ServicesSection() {
               </>
             );
 
+            const delay = gridInView ? i * 90 : 0;
             const animStyle = {
-              transitionDelay: gridInView ? `${i * 90}ms` : "0ms",
               opacity: gridInView ? 1 : 0,
               transform: gridInView ? "translateY(0)" : "translateY(24px)",
-              transition: "opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease",
+              transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms, border-color 0.3s ease`,
             };
 
             return s.cta ? (
