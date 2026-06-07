@@ -6,7 +6,7 @@ import ServiceCarousel from "@/components/ServiceCarousel";
 import { services } from "@/lib/services";
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export function generateStaticParams() {
@@ -15,8 +15,9 @@ export function generateStaticParams() {
     .map((s) => ({ slug: s.slug }));
 }
 
-export function generateMetadata({ params }: Props): Metadata {
-  const service = services.find((s) => s.slug === params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const service = services.find((s) => s.slug === slug);
   if (!service) return {};
   return {
     title: `${service.title} — VTP Trčka`,
@@ -24,8 +25,9 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-export default function ServicePage({ params }: Props) {
-  const service = services.find((s) => s.slug === params.slug && !s.cta);
+export default async function ServicePage({ params }: Props) {
+  const { slug } = await params;
+  const service = services.find((s) => s.slug === slug && !s.cta);
   if (!service) notFound();
 
   return (
