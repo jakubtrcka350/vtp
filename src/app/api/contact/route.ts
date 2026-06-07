@@ -49,19 +49,6 @@ export async function POST(req: NextRequest) {
     if (!EMAIL_RE.test(cleanEmail)) {
       return NextResponse.json({ error: "Neplatná e-mailová adresa." }, { status: 400 });
     }
-
-    const inquiry: Inquiry = {
-      id: randomUUID(),
-      name:    cleanName,
-      email:   cleanEmail,
-      phone:   cleanPhone,
-      message: cleanMessage,
-      createdAt: Date.now(),
-      read: false,
-    };
-
-    await addInquiry(inquiry);
-
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("[contact] error:", err);
