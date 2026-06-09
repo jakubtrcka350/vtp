@@ -40,8 +40,8 @@ export const services: ServiceItem[] = [
         desc: "Montáž, výměna a zapojení tepelných čerpadel, plynových kotlů, kotlů na tuhá paliva i dalších zdrojů vytápění pro rodinné domy, bytové domy a komerční objekty. Pomůžeme s výběrem vhodného řešení a zajistíme profesionální realizaci.",
       },
       {
-        title: "Obklady a dlažby",
-        desc: "Profesionální pokládka obkladů a dlažeb v koupelnách, technických místnostech, na terasách i dalších plochách.",
+        title: "Kompletace sanity",
+        desc: "Odborná montáž koupelnového vybavení včetně van, sprchových koutů, WC, umyvadel, baterií a další sanitární techniky až do finálního dokončení.",
       },
     ],
     photos: [
@@ -89,7 +89,7 @@ export const services: ServiceItem[] = [
   {
     slug: "stavebni-prace",
     category: "Rekonstrukce",
-    title: "Stavební práce",
+    title: "Zednické a obkladačské práce",
     desc: "Kompletní stavební a zednické práce — zdění příček, omítky, obklady, bourání, překlady i kompletace sanity. Přesné provedení a kvalitní materiály.",
     detail: "Provádíme kompletní stavební a zednické práce v rámci rekonstrukcí i novostaveb. Spolupracujeme se zákazníkem od první konzultace až po finální předání hotového díla.",
     subServices: [
@@ -114,11 +114,11 @@ export const services: ServiceItem[] = [
         desc: "Osazování překladů, úpravy stavebních otvorů, zazdívky a další zednické práce související s rekonstrukcemi.",
       },
       {
-        title: "Kompletace sanity",
-        desc: "Odborná montáž koupelnového vybavení včetně van, sprchových koutů, WC, umyvadel, baterií a další sanitární techniky až do finálního dokončení.",
+        title: "Obklady a dlažby",
+        desc: "Profesionální pokládka obkladů a dlažeb v koupelnách, technických místnostech, na terasách i dalších plochách.",
       },
     ],
-    photos: ["/images/services/zedn_prace/zednicke_prace.jpeg"],
+    photos: ["/images/services/zedn_prace/zednicke_prace.jpg"],
     gradient: "from-[#141420] to-[#0d0d18]",
   },
   {

@@ -37,12 +37,12 @@ export default async function ServicePage({ params }: Props) {
       <main className="pt-[90px] min-h-dvh flex flex-col lg:flex-row">
 
         {/* ── Left: photo carousel ──────────────────────────────── */}
-        <div className="w-full aspect-[4/3] lg:aspect-auto lg:flex-1 lg:sticky lg:top-[90px] lg:h-[calc(100dvh-90px)]">
+        <div className="w-full h-[60vw] min-h-[280px] max-h-[500px] lg:h-[calc(100dvh-90px)] lg:max-h-none lg:w-1/2 lg:sticky lg:top-[90px]">
           <ServiceCarousel photos={service.photos} title={service.title} />
         </div>
 
         {/* ── Right: info panel ─────────────────────────────────── */}
-        <div className="w-full lg:w-[42%] bg-white flex flex-col px-8 py-10 lg:px-14 lg:py-16 border-t border-[#e8e8e8] lg:border-t-0 lg:border-l lg:overflow-y-auto lg:max-h-[calc(100dvh-90px)]">
+        <div className="w-full lg:w-1/2 bg-white flex flex-col px-8 py-10 lg:px-14 lg:py-16 border-t border-[#e8e8e8] lg:border-t-0 lg:border-l lg:overflow-y-auto lg:max-h-[calc(100dvh-90px)]">
 
           {/* Back link */}
           <Link

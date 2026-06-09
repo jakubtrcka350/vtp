@@ -51,7 +51,7 @@ export default function ServiceCarousel({ photos, title }: Props) {
       {photos.map((src, i) => (
         <div
           key={src}
-          className={`absolute inset-0 flex items-center justify-center motion-safe:transition-opacity motion-safe:duration-500 ${
+          className={`absolute inset-0 motion-safe:transition-opacity motion-safe:duration-500 ${
             i === current ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
@@ -59,7 +59,7 @@ export default function ServiceCarousel({ photos, title }: Props) {
           <img
             src={src}
             alt={i === 0 ? title : ""}
-            className="max-w-full max-h-full object-contain"
+            className="w-full h-full object-cover object-center"
           />
         </div>
       ))}

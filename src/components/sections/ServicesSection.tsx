@@ -146,7 +146,7 @@ export default function ServicesSection() {
                   {/* Accordion body — photo above, text below */}
                   <div className={`overflow-hidden transition-all duration-500 ${isOpen ? "max-h-[9999px]" : "max-h-0"}`}>
                     {/* Photo */}
-                    <div className="relative h-48 overflow-hidden bg-[#111]">
+                    <div className="relative h-48 md:h-96 overflow-hidden bg-[#111]">
                       <PhotoSlideshow photos={s.photos} gradient={s.gradient} title={s.title} />
                     </div>
                     {/* Text content */}

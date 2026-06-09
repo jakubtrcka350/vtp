@@ -91,7 +91,7 @@ export default function WorkModal({ work, onClose }: Props) {
 
         {/* ── Top/Left: image viewer ──────────────────────────────── */}
         <div
-          className="relative backdrop-blur-md flex items-center justify-center overflow-hidden h-64 sm:h-72 flex-shrink-0 lg:h-auto lg:flex-1 lg:min-h-0"
+          className="relative backdrop-blur-md overflow-hidden h-[75vw] min-h-[320px] max-h-[520px] flex-shrink-0 lg:h-full lg:min-h-0 lg:max-h-none lg:flex-1"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
@@ -100,7 +100,7 @@ export default function WorkModal({ work, onClose }: Props) {
           {work.images.map((url, i) => (
             <div
               key={url}
-              className={`absolute inset-0 flex items-center justify-center motion-safe:transition-opacity motion-safe:duration-300 ${
+              className={`absolute inset-0 motion-safe:transition-opacity motion-safe:duration-300 ${
                 i === current ? "opacity-100" : "opacity-0 pointer-events-none"
               }`}
             >
@@ -108,7 +108,7 @@ export default function WorkModal({ work, onClose }: Props) {
               <img
                 src={url}
                 alt={i === 0 ? work.title : ""}
-                className="max-w-full max-h-full block"
+                className="w-full h-full object-cover object-center"
               />
             </div>
           ))}

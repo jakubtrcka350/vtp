@@ -254,7 +254,7 @@ export default function Navbar() {
           {/* Služby expandable */}
           <button
             onClick={() => setServicesOpen((o) => !o)}
-            className="flex items-center justify-between w-full text-sm text-white hover:text-[#777777] transition-colors py-2"
+            className="flex items-center justify-between w-full text-sm font-normal text-white hover:text-[#777777] transition-colors py-2 bg-transparent"
           >
             <span>Služby</span>
             <svg
