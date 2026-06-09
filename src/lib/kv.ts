@@ -10,6 +10,10 @@ import {
   localDeleteInquiry,
 } from "./local-store";
 
+// Namespace prefix — keeps our keys isolated when sharing a Redis instance
+// with other projects.
+const NS = "vtp";
+
 function kvAvailable(): boolean {
   return !!process.env.KV_REST_API_URL && !!process.env.KV_REST_API_TOKEN;
 }
@@ -44,11 +48,11 @@ export async function getWorks(): Promise<Work[]> {
 
   try {
     const kv = await getKV();
-    const ids: string[] = await kv.smembers("works");
+    const ids: string[] = await kv.smembers(`${NS}:works`);
     if (!ids || ids.length === 0) return [];
 
     const raws = await Promise.all(
-      ids.map((id: string) => kv.hgetall(`work:${id}`))
+      ids.map((id: string) => kv.hgetall(`${NS}:work:${id}`))
     );
 
     return (raws as (Record<string, unknown> | null)[])
@@ -64,23 +68,23 @@ export async function addWork(work: Work): Promise<void> {
   if (!kvAvailable()) return localAddWork(work);
 
   const kv = await getKV();
-  await kv.hset(`work:${work.id}`, serializeWork(work));
-  await kv.sadd("works", work.id);
+  await kv.hset(`${NS}:work:${work.id}`, serializeWork(work));
+  await kv.sadd(`${NS}:works`, work.id);
 }
 
 export async function updateWork(work: Work): Promise<void> {
   if (!kvAvailable()) return localUpdateWork(work);
 
   const kv = await getKV();
-  await kv.hset(`work:${work.id}`, serializeWork(work));
+  await kv.hset(`${NS}:work:${work.id}`, serializeWork(work));
 }
 
 export async function deleteWork(id: string): Promise<void> {
   if (!kvAvailable()) return localDeleteWork(id);
 
   const kv = await getKV();
-  await kv.del(`work:${id}`);
-  await kv.srem("works", id);
+  await kv.del(`${NS}:work:${id}`);
+  await kv.srem(`${NS}:works`, id);
 }
 
 // ─── Inquiries ────────────────────────────────────────────────────────────────
@@ -90,11 +94,11 @@ export async function getInquiries(): Promise<Inquiry[]> {
 
   try {
     const kv = await getKV();
-    const ids: string[] = await kv.smembers("inquiries");
+    const ids: string[] = await kv.smembers(`${NS}:inquiries`);
     if (!ids || ids.length === 0) return [];
 
     const items = await Promise.all(
-      ids.map((id: string) => kv.hgetall(`inquiry:${id}`))
+      ids.map((id: string) => kv.hgetall(`${NS}:inquiry:${id}`))
     );
 
     return (items as (Inquiry | null)[])
@@ -110,21 +114,21 @@ export async function addInquiry(inquiry: Inquiry): Promise<void> {
 
   const kv = await getKV();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  await kv.hset(`inquiry:${inquiry.id}`, inquiry as any);
-  await kv.sadd("inquiries", inquiry.id);
+  await kv.hset(`${NS}:inquiry:${inquiry.id}`, inquiry as any);
+  await kv.sadd(`${NS}:inquiries`, inquiry.id);
 }
 
 export async function markInquiryRead(id: string): Promise<void> {
   if (!kvAvailable()) return localMarkInquiryRead(id);
 
   const kv = await getKV();
-  await kv.hset(`inquiry:${id}`, { read: true });
+  await kv.hset(`${NS}:inquiry:${id}`, { read: true });
 }
 
 export async function deleteInquiry(id: string): Promise<void> {
   if (!kvAvailable()) return localDeleteInquiry(id);
 
   const kv = await getKV();
-  await kv.del(`inquiry:${id}`);
-  await kv.srem("inquiries", id);
+  await kv.del(`${NS}:inquiry:${id}`);
+  await kv.srem(`${NS}:inquiries`, id);
 }
