@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useInView } from "@/hooks/useInView";
 
 const values = [
@@ -20,25 +21,19 @@ export default function AboutSection() {
         {/* Image — slides in from left */}
         <div
           ref={imgRef}
-          className="relative overflow-hidden"
+          className="relative overflow-visible"
           style={{
             opacity: imgInView ? 1 : 0,
             transform: imgInView ? "translateX(0)" : "translateX(-32px)",
             transition: "opacity 0.8s ease, transform 0.8s ease",
           }}
         >
-          <div className="aspect-[4/3] bg-[#f5f5f5] border border-[#e0e0e0] flex items-center justify-center overflow-hidden">
-            {/* Replace with real team photo: <Image src="/images/tym.jpg" alt="Tým VTP Trčka" fill className="object-cover" /> */}
-            <div className="flex flex-col items-center gap-3 text-[#cccccc]">
-              <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span className="text-xs tracking-wider">Fotka týmu</span>
-            </div>
+          <div className="aspect-[4/3] bg-[#f5f5f5] border border-[#e0e0e0] flex items-center justify-center overflow-visible">
+            {/* Replace with real team photo:  */}
+              <Image src="/images/about/about.jpeg" alt="Tým VTP Trčka" fill className="object-cover" />
           </div>
-          <div className="absolute -bottom-4 -right-4 w-28 h-28 border border-[#0047AB]/20 pointer-events-none" />
-          <div className="absolute -bottom-2 -right-2 w-16 h-16 border border-[#f06820]/30 pointer-events-none" />
+          <div className="absolute -bottom-4 -right-4 w-28 h-28 border border-[#0047AB]/40 pointer-events-none"/>
+          <div className="absolute -bottom-2 -right-2 w-16 h-16 border border-[#f06820]/60 pointer-events-none"/>
         </div>
 
         {/* Text — slides in from right */}
