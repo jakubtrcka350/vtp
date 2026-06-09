@@ -3,6 +3,7 @@ import { addInquiry } from "@/lib/kv";
 import type { Inquiry } from "@/lib/types";
 import { randomUUID } from "crypto";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { sendConfirmationEmail, sendOwnerNotification } from "@/lib/email";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -41,7 +42,7 @@ export async function POST(req: NextRequest) {
 
     // Length limits
     if (cleanName.length    > LIMITS.name)    return NextResponse.json({ error: `Jméno je příliš dlouhé (max ${LIMITS.name} znaků).` },    { status: 400 });
-    if (cleanEmail.length   > LIMITS.email)   return NextResponse.json({ error: `E-mail je příliš dlouhý.` },                               { status: 400 });
+    if (cleanEmail.length   > LIMITS.email)   return NextResponse.json({ error: "E-mail je příliš dlouhý." },                               { status: 400 });
     if (cleanMessage.length > LIMITS.message) return NextResponse.json({ error: `Zpráva je příliš dlouhá (max ${LIMITS.message} znaků).` }, { status: 400 });
     if (cleanPhone && cleanPhone.length > LIMITS.phone) return NextResponse.json({ error: "Telefon je příliš dlouhý." }, { status: 400 });
 
@@ -49,6 +50,26 @@ export async function POST(req: NextRequest) {
     if (!EMAIL_RE.test(cleanEmail)) {
       return NextResponse.json({ error: "Neplatná e-mailová adresa." }, { status: 400 });
     }
+
+    const inquiry: Inquiry = {
+      id: randomUUID(),
+      name:    cleanName,
+      email:   cleanEmail,
+      phone:   cleanPhone,
+      message: cleanMessage,
+      createdAt: Date.now(),
+      read: false,
+    };
+
+    // Save to database
+    await addInquiry(inquiry);
+
+    // Send emails — fire-and-forget so a mail failure never blocks the response
+    Promise.all([
+      sendConfirmationEmail(inquiry),
+      sendOwnerNotification(inquiry),
+    ]).catch((err) => console.error("[contact] email error:", err));
+
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("[contact] error:", err);
