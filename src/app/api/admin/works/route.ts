@@ -1,13 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyToken, COOKIE_NAME } from "@/lib/auth";
+import { isAuthed } from "@/lib/auth";
 import { getWorks, addWork } from "@/lib/kv";
 import type { Work } from "@/lib/types";
 import { randomUUID } from "crypto";
-
-function isAuthed(req: NextRequest): boolean {
-  const token = req.cookies.get(COOKIE_NAME)?.value;
-  return !!token && verifyToken(token);
-}
 
 export async function GET(req: NextRequest) {
   if (!isAuthed(req))
@@ -21,11 +16,21 @@ export async function POST(req: NextRequest) {
   if (!isAuthed(req))
     return NextResponse.json({ error: "Nepřihlášen." }, { status: 401 });
 
-  const { title, description, images, coverImage } = await req.json();
+  const { title, description, tag, images, coverImage } = await req.json();
 
-  if (!title || !Array.isArray(images) || images.length === 0 || !coverImage) {
+  const imageList: string[] = Array.isArray(images) ? images.map(String) : [];
+
+  if (!title || imageList.length === 0 || !coverImage) {
     return NextResponse.json(
       { error: "Název, obrázky a náhledová fotka jsou povinné." },
+      { status: 400 }
+    );
+  }
+
+  // coverImage must be one of the submitted images (prevents orphaned references)
+  if (!imageList.includes(String(coverImage))) {
+    return NextResponse.json(
+      { error: "Náhledová fotka musí být jedním z nahraných obrázků." },
       { status: 400 }
     );
   }
@@ -34,7 +39,8 @@ export async function POST(req: NextRequest) {
     id: randomUUID(),
     title: String(title).trim(),
     description: description ? String(description).trim() : "",
-    images: images.map(String),
+    tag: tag ? String(tag).trim() : undefined,
+    images: imageList,
     coverImage: String(coverImage),
     createdAt: Date.now(),
   };

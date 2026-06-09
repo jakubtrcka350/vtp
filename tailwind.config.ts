@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { colors } from "./src/lib/colors";
 
 const config: Config = {
   content: [
@@ -9,13 +10,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#0a0a0a",
-        surface: "#111111",
-        "surface-2": "#1c1c1c",
-        border: "#262626",
-        "text-primary": "#f0f0f0",
-        "text-muted": "#888888",
-        accent: "#c8a96e",
+        accent:        colors.accent,
+        cobalt:        colors.cobalt,
+        bg:            colors.bg,
+        surface:       colors.surface,
+        "surface-2":   colors.surface2,
+        "surface-alt": colors.surfaceAlt,
+        border:        colors.border,
+        "text-primary": colors.textPrimary,
+        "text-muted":   colors.textMuted,
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
@@ -25,7 +28,7 @@ const config: Config = {
       },
       keyframes: {
         fadeUp: {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "0%":   { opacity: "0", transform: "translateY(20px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },

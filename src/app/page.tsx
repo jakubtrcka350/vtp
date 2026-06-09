@@ -16,9 +16,9 @@ export default async function Home() {
       <Navbar />
       <main>
         <PoptavkaSection />
-        <AboutSection />
-        <WorksSection works={works} />
         <ServicesSection />
+        <WorksSection works={works} />
+        <AboutSection />
         <KontaktSection />
       </main>
     </>
