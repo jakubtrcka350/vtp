@@ -56,7 +56,7 @@ export default function AboutSection() {
           <p className="mt-6 text-[#666666] leading-relaxed">
             Jsme rodinná firma VTP Trčka specializující se na vodo-topo-plyn,
             čištění potrubí, kamerové zkoušky a zednické a obkladačské práce.
-            S více než desetiletou praxí v oboru přistupujeme ke každé zakázce
+            S více než pět a dvacetiletou praxí v oboru přistupujeme ke každé zakázce
             s důrazem na poctivé řemeslo a spokojenost klienta.
           </p>
           <p className="mt-4 text-[#666666] leading-relaxed">

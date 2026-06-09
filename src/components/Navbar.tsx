@@ -1,20 +1,29 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {colors} from "../lib/colors";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { colors } from "../lib/colors";
 import Image from "next/image";
+import { services } from "@/lib/services";
 
-const links = [
+const beforeLinks = [
   { label: "Poptávka", href: "#poptavka" },
-  { label: "Služby", href: "#sluzby" },
-  { label: "Naše práce", href: "#nase-prace" },
+];
+
+const afterLinks = [
   { label: "O nás", href: "#o-nas" },
   { label: "Kontakt", href: "#kontakt" },
 ];
 
+// Services that have their own detail page (exclude CTA card)
+const serviceLinks = services.filter((s) => !s.cta);
+
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled]       = useState(false);
+  const [menuOpen, setMenuOpen]       = useState(false);
+  const [dropOpen, setDropOpen]       = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false); // mobile sub-list
+  const dropRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -22,10 +31,24 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${scrolled || menuOpen ? "border-white/[0.06]" : "border-transparent"}`}>
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropRef.current && !dropRef.current.contains(e.target as Node)) {
+        setDropOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
-      {/* Dark right-side background */}
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+        scrolled || menuOpen ? "border-white/[0.06]" : "border-transparent"
+      }`}
+    >
+      {/* Dark background */}
       <div
         className={`absolute inset-0 transition-colors duration-300 ${
           scrolled || menuOpen ? "bg-[#080808]/80 backdrop-blur-sm" : "bg-transparent"
@@ -60,9 +83,7 @@ export default function Navbar() {
 
       <div className="relative z-10 h-[90px]">
 
-        {/* Logo — container matches the white panel width so the logo right-aligns
-            against the diagonal edge at any viewport width or zoom level.
-            pr accounts for the diagonal slope (60px over 90px → ~30px at midheight) */}
+        {/* Logo */}
         <div
           className="absolute inset-y-0 left-0 flex items-center justify-end pr-[72px]"
           style={{ width: "var(--navbar-panel)" }}
@@ -82,12 +103,98 @@ export default function Navbar() {
           </a>
         </div>
 
-        {/* Nav + CTA + hamburger — own max-w container, pushed to the right */}
+        {/* Desktop nav + CTA */}
         <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-end gap-8">
-
-          {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-8">
-            {links.map((l) => (
+
+            {/* Links before Služby */}
+            {beforeLinks.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="text-lg text-white hover:text-[#777777] transition-colors duration-200 tracking-wide"
+              >
+                {l.label}
+              </a>
+            ))}
+
+            {/* Služby dropdown */}
+            <div ref={dropRef} className="relative">
+              <button
+                onClick={() => setDropOpen((o) => !o)}
+                className="flex items-center gap-1.5 text-lg text-white hover:text-[#777777] transition-colors duration-200 tracking-wide"
+                aria-expanded={dropOpen}
+                aria-haspopup="true"
+              >
+                Služby
+                <svg
+                  className={`w-3 h-3 transition-transform duration-200 ${dropOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* Dropdown panel */}
+              <div
+                className={`absolute top-full left-1/2 -translate-x-1/2 mt-4 w-72 bg-[#111111] border border-white/[0.08] shadow-2xl transition-all duration-200 origin-top ${
+                  dropOpen
+                    ? "opacity-100 scale-y-100 pointer-events-auto"
+                    : "opacity-0 scale-y-95 pointer-events-none"
+                }`}
+              >
+                {/* Small arrow */}
+                <div className="absolute -top-[5px] left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-[#111111] border-l border-t border-white/[0.08] rotate-45" />
+
+                <ul className="py-2">
+                  {serviceLinks.map((s) => (
+                    <li key={s.slug}>
+                      <Link
+                        href={`/sluzby/${s.slug}`}
+                        onClick={() => setDropOpen(false)}
+                        className="group flex items-start gap-3 px-4 py-3 hover:bg-white/[0.04] transition-colors duration-150 border-l-2 border-transparent hover:border-[#f06820]"
+                      >
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[10px] text-[#f06820] tracking-[0.2em] uppercase font-medium mb-0.5">
+                            {s.category}
+                          </p>
+                          <p className="text-white text-sm font-medium leading-snug group-hover:text-white/90">
+                            {s.title}
+                          </p>
+                        </div>
+                        <svg
+                          className="w-3.5 h-3.5 mt-[3px] flex-shrink-0 text-white/20 group-hover:text-[#f06820] transition-colors duration-150"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+                    </li>
+                  ))}
+
+                  {/* Divider + homepage anchor */}
+                  <li className="border-t border-white/[0.06] mt-1 pt-1">
+                    <a
+                      href="/#sluzby"
+                      onClick={() => setDropOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2.5 text-xs text-white/40 hover:text-white/70 transition-colors duration-150"
+                    >
+                      Všechny služby
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Links after Služby */}
+            {afterLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
@@ -124,22 +231,78 @@ export default function Navbar() {
       </div>
 
       {/* Mobile menu */}
-      <div id="mobile-menu" className={`lg:hidden overflow-hidden transition-all duration-300 ${menuOpen ? "max-h-96 border-b border-white/[0.06]" : "max-h-0"}`}>
-        <nav className="px-6 pb-6 pt-2 flex flex-col gap-4 bg-[#080808]/95 backdrop-blur-sm">
-          {links.map((l) => (
+      <div
+        id="mobile-menu"
+        className={`lg:hidden overflow-hidden transition-all duration-300 ${
+          menuOpen ? "max-h-[600px] border-b border-white/[0.06]" : "max-h-0"
+        }`}
+      >
+        <nav className="px-6 pb-6 pt-2 flex flex-col gap-1 bg-[#080808]/95 backdrop-blur-sm">
+
+          {/* Links before Služby */}
+          {beforeLinks.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setMenuOpen(false)}
-              className="text-sm text-white hover:text-[#777777] transition-colors py-1"
+              className="text-sm text-white hover:text-[#777777] transition-colors py-2"
             >
               {l.label}
             </a>
           ))}
+
+          {/* Služby expandable */}
+          <button
+            onClick={() => setServicesOpen((o) => !o)}
+            className="flex items-center justify-between w-full text-sm text-white hover:text-[#777777] transition-colors py-2"
+          >
+            <span>Služby</span>
+            <svg
+              className={`w-3.5 h-3.5 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {/* Service sub-list */}
+          <div className={`overflow-hidden transition-all duration-300 ${servicesOpen ? "max-h-96" : "max-h-0"}`}>
+            <ul className="pl-3 border-l border-white/[0.08] mb-1 mt-1 space-y-0.5">
+              {serviceLinks.map((s) => (
+                <li key={s.slug}>
+                  <Link
+                    href={`/sluzby/${s.slug}`}
+                    onClick={() => { setMenuOpen(false); setServicesOpen(false); }}
+                    className="flex items-center justify-between py-2 px-2 text-sm text-white/70 hover:text-white transition-colors"
+                  >
+                    {s.title}
+                    <svg className="w-3 h-3 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Links after Služby */}
+          {afterLinks.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              onClick={() => setMenuOpen(false)}
+              className="text-sm text-white hover:text-[#777777] transition-colors py-2"
+            >
+              {l.label}
+            </a>
+          ))}
+
           <a
             href="#poptavka"
             onClick={() => setMenuOpen(false)}
-            className="btn-primary mt-2 justify-center text-xs tracking-widest"
+            className="btn-primary mt-3 justify-center text-xs tracking-widest"
           >
             Poptat práci
           </a>

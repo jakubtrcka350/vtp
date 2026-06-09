@@ -18,5 +18,4 @@ export interface Inquiry {
   phone?: string;
   message: string;
   createdAt: number;
-  read: boolean;
 }

@@ -53,7 +53,6 @@ export async function POST(req: NextRequest) {
       phone:   cleanPhone,
       message: cleanMessage,
       createdAt: Date.now(),
-      read: false,
     };
 
     // Send emails — fire-and-forget, never blocks the response

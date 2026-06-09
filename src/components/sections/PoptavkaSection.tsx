@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
@@ -121,7 +121,7 @@ export default function PoptavkaSection() {
             </h1>
 
             <p className="mt-8 text-white text-lg leading-relaxed max-w-[420px]">
-              Vodo-topo-plyn, čištění potrubí, kamerové zkoušky a stavební práce s více než desetiletou praxí.
+              Vodo-topo-plyn, čištění potrubí, kamerové zkoušky a stavební práce s více než pět a dvacetiletou praxí.
               Poptejte práci — odpovíme do 24 hodin.
             </p>
 

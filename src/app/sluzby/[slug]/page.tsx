@@ -72,15 +72,33 @@ export default async function ServicePage({ params }: Props) {
           />
 
           {/* Detail text */}
-          <div className="flex-1 mb-10 max-w-prose">
-            {service.detail.split("\n\n").map((paragraph, i) => (
-              <p
-                key={i}
-                className="text-[#555555] text-base font-serif leading-[1.9] mb-5 last:mb-0"
-              >
-                {paragraph}
+          <div className="flex-1 mb-10">
+            {/* Intro paragraph */}
+            {service.detail && (
+              <p className="text-[#555555] text-base font-serif leading-[1.9] mb-8 max-w-prose">
+                {service.detail}
               </p>
-            ))}
+            )}
+
+            {/* Sub-services list */}
+            {service.subServices && service.subServices.length > 0 && (
+              <ul className="space-y-6">
+                {service.subServices.map((sub, i) => (
+                  <li key={i} className="flex gap-4">
+                    {/* Accent dot */}
+                    <div className="mt-[7px] flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#f06820]" />
+                    <div>
+                      <h3 className="text-[#0a0a0a] font-semibold text-sm mb-1">
+                        {sub.title}
+                      </h3>
+                      <p className="text-[#666666] text-sm leading-relaxed">
+                        {sub.desc}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* CTA */}

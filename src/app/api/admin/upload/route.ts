@@ -41,24 +41,25 @@ export async function POST(req: NextRequest) {
 
   // ── Production: Vercel Blob ───────────────────────────────────────────────
   if (blobAvailable()) {
-    const { put } = await import("@vercel/blob");
-    // Safe filename built from timestamp + server-validated extension only
-    const blob = await put(`works/${Date.now()}.${ext}`, file, {
-      access: "public",
-    });
-    return NextResponse.json({ url: blob.url });
+    try {
+      const { put } = await import("@vercel/blob");
+      // Safe filename built from timestamp + server-validated extension only
+      const blob = await put(`works/${Date.now()}.${ext}`, file, {
+        access: "public",
+      });
+      return NextResponse.json({ url: blob.url });
+    } catch (err) {
+      console.error("[upload] Vercel Blob error:", err);
+      const message = err instanceof Error ? err.message : String(err);
+      return NextResponse.json(
+        { error: `Chyba při nahrávání souboru: ${message}` },
+        { status: 500 }
+      );
+    }
   }
 
-  // ── Development: save to public/uploads/ ─────────────────────────────────
-  const { writeFile, mkdir } = await import("fs/promises");
-  const { join } = await import("path");
-
-  const uploadsDir = join(process.cwd(), "public", "uploads");
-  await mkdir(uploadsDir, { recursive: true });
-
-  const filename = `${Date.now()}.${ext}`;
-  const bytes = await file.arrayBuffer();
-  await writeFile(join(uploadsDir, filename), Buffer.from(bytes));
-
-  return NextResponse.json({ url: `/uploads/${filename}` });
+  return NextResponse.json(
+    { error: "Nahrávání souborů není nakonfigurováno." },
+    { status: 503 }
+  );
 }
