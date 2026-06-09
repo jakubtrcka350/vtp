@@ -167,13 +167,13 @@ export default function PoptavkaSection() {
                     <h2 className="text-white font-semibold text-base tracking-wide">
                       Nezávazná poptávka
                     </h2>
-                    <p className="text-white/40 text-xs mt-1">Vyplňte formulář a my se ozveme.</p>
+                    <p className="text-white/60 text-xs mt-1">Vyplňte formulář a my se ozveme.</p>
                   </div>
 
                   <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label htmlFor="contact-name" className="block text-[10px] text-white/50 mb-1.5 tracking-widest uppercase">
+                        <label htmlFor="contact-name" className="block text-[10px] text-white/80 mb-1.5 tracking-widest uppercase">
                           Jméno a příjmení *
                         </label>
                         <input
@@ -188,7 +188,7 @@ export default function PoptavkaSection() {
                         />
                       </div>
                       <div>
-                        <label htmlFor="contact-phone" className="block text-[10px] text-white/50 mb-1.5 tracking-widest uppercase">
+                        <label htmlFor="contact-phone" className="block text-[10px] text-white/80 mb-1.5 tracking-widest uppercase">
                           Telefon
                         </label>
                         <input
@@ -204,7 +204,7 @@ export default function PoptavkaSection() {
                     </div>
 
                     <div>
-                      <label htmlFor="contact-email" className="block text-[10px] text-white/50 mb-1.5 tracking-widest uppercase">
+                      <label htmlFor="contact-email" className="block text-[10px] text-white/80 mb-1.5 tracking-widest uppercase">
                         E-mail *
                       </label>
                       <input
@@ -220,7 +220,7 @@ export default function PoptavkaSection() {
                     </div>
 
                     <div>
-                      <label htmlFor="contact-message" className="block text-[10px] text-white/50 mb-1.5 tracking-widest uppercase">
+                      <label htmlFor="contact-message" className="block text-[10px] text-white/80 mb-1.5 tracking-widest uppercase">
                         Popis projektu *
                       </label>
                       <textarea
@@ -251,6 +251,9 @@ export default function PoptavkaSection() {
 
                     <p className="text-white/50 text-[10px] text-center tracking-wide">
                       Bez závazků · Odpovíme do 24 hodin
+                    </p>
+                    <p className="text-white/30 text-[10px] text-center leading-relaxed">
+                      Odesláním formuláře souhlasíte se zpracováním osobních údajů.
                     </p>
                   </form>
                 </>

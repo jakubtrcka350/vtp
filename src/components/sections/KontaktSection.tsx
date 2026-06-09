@@ -79,11 +79,50 @@ export default function KontaktSection() {
       </div>
 
       {/* Footer bar — dark */}
-      <div className="bg-[#0a0a0a] py-6">
+      <div className="bg-[#0a0a0a] py-8">
         <div className="max-w-6xl mx-auto px-6">
-          <p className="text-xs text-white/50 text-center md:text-left">
-            © {new Date().getFullYear()} VTP Trčka. Všechna práva vyhrazena.
-          </p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6 pb-6 border-b border-white/[0.06]">
+
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              <p className="text-white/50 text-sm">Připraveni začít?</p>
+              <a
+                href="#poptavka"
+                className="inline-flex items-center gap-2 bg-white text-[#0a0a0a] px-5 py-2.5 text-xs font-semibold tracking-widest hover:bg-[#f0f0f0] transition-colors duration-200"
+              >
+                Poptat práci
+              </a>
+            </div>
+
+            {/* Quick nav */}
+            <nav className="flex flex-wrap gap-x-6 gap-y-2">
+              {[
+                { label: "Poptávka", href: "#poptavka" },
+                { label: "Služby", href: "#sluzby" },
+                { label: "O nás", href: "#o-nas" },
+                { label: "Kontakt", href: "#kontakt" },
+              ].map((l) => (
+                <a key={l.href} href={l.href} className="text-xs text-white/40 hover:text-white/80 transition-colors duration-200">
+                  {l.label}
+                </a>
+              ))}
+            </nav>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <p className="text-xs text-white/30">
+              © {new Date().getFullYear()} VTP Trčka. Všechna práva vyhrazena.
+            </p>
+            <div className="flex items-center gap-4">
+              <a href="tel:+420731863896" className="text-xs text-white/30 hover:text-white/60 transition-colors duration-200">
+                +420 731 863 896
+              </a>
+              <span className="text-white/10">·</span>
+              <a href="tel:+420603162571" className="text-xs text-white/30 hover:text-white/60 transition-colors duration-200">
+                +420 603 162 571
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

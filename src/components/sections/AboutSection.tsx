@@ -29,8 +29,7 @@ export default function AboutSection() {
           }}
         >
           <div className="aspect-[4/3] bg-[#f5f5f5] border border-[#e0e0e0] flex items-center justify-center overflow-visible">
-            {/* Replace with real team photo:  */}
-              <Image src="/images/about/about.jpeg" alt="Tým VTP Trčka" fill className="object-cover" />
+            <Image src="/images/about/about.jpeg" alt="Tým VTP Trčka" fill className="object-cover" />
           </div>
           <div className="absolute -bottom-4 -right-4 w-28 h-28 border border-[#0047AB]/40 pointer-events-none"/>
           <div className="absolute -bottom-2 -right-2 w-16 h-16 border border-[#f06820]/60 pointer-events-none"/>
@@ -48,9 +47,9 @@ export default function AboutSection() {
           <p className="section-label">O nás</p>
           <div className="section-accent-line" />
           <h2 className="text-3xl md:text-4xl font-bold text-[#0a0a0a] tracking-tight">
-            Voda a teplo,
+            Rodinná firma
             <br />
-            jak mají být.
+            s tradicí 25 let.
           </h2>
 
           <p className="mt-6 text-[#666666] leading-relaxed">

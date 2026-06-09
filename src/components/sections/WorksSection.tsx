@@ -54,9 +54,13 @@ export default function WorksSection({ works }: Props) {
                 return (
                   <article
                     key={work.id}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => setSelected(work)}
+                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelected(work); } }}
+                    aria-label={`Zobrazit realizaci: ${work.title}`}
                     style={isRevealed ? { animationDelay: `${(i - INITIAL_SHOW) * 60}ms` } : undefined}
-                    className={`group cursor-pointer relative aspect-[4/3] overflow-hidden bg-[#1c1c1c] border border-[#2a2a2a] hover:border-white transition-colors duration-300 w-full md:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] ${
+                    className={`group cursor-pointer relative aspect-[4/3] overflow-hidden bg-[#1c1c1c] border border-[#2a2a2a] hover:border-[#555555] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f06820]/60 transition-colors duration-300 w-full md:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] ${
                       isRevealed ? "motion-safe:animate-fade-up [animation-fill-mode:both]" : ""
                     }`}
                   >
@@ -89,7 +93,7 @@ export default function WorksSection({ works }: Props) {
                     {/* Scrim + title overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h3 className="font-semibold text-white text-sm leading-snug uppercase tracking-wide">
+                      <h3 className="font-semibold text-white text-sm leading-snug uppercase tracking-wide line-clamp-2">
                         {work.title}
                       </h3>
                     </div>

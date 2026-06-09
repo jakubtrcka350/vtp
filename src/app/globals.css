@@ -25,7 +25,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 72px;
+  scroll-padding-top: 90px;
 }
 
 * {
@@ -79,7 +79,7 @@ body {
   }
 
   .input-field {
-    @apply w-full bg-[#1e1e1e] border border-[#383838] text-[#f0f0f0] placeholder-[#606060] px-4 py-3 text-sm outline-none focus:border-white/50 transition-colors duration-200;
+    @apply w-full bg-[#1e1e1e] border border-[#383838] text-[#f0f0f0] placeholder-[#606060] px-4 py-3 text-sm outline-none focus:border-[#f06820]/70 transition-colors duration-200;
   }
 
   .card {
