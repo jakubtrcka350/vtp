@@ -125,7 +125,7 @@ export default function KontaktSection() {
           </div>
           <div className="mt-4 pt-4 border-t border-white/[0.04]">
             <p className="text-xs text-white/20">
-              Vytvořeno{" "}
+              Vytvořil{" "}
               <a
                 href="https://romanmachala.cz"
                 target="_blank"
