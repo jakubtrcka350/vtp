@@ -45,6 +45,12 @@ export async function POST(req: NextRequest) {
     createdAt: Date.now(),
   };
 
-  await addWork(work);
+  try {
+    await addWork(work);
+  } catch (err) {
+    console.error("[works] addWork error:", err);
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: `Chyba při ukládání: ${message}` }, { status: 500 });
+  }
   return NextResponse.json(work, { status: 201 });
 }

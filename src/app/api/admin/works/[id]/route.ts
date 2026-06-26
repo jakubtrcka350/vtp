@@ -40,7 +40,13 @@ export async function PUT(
     createdAt: Number(createdAt) || Date.now(),
   };
 
-  await updateWork(work);
+  try {
+    await updateWork(work);
+  } catch (err) {
+    console.error("[works] updateWork error:", err);
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: `Chyba při ukládání: ${message}` }, { status: 500 });
+  }
   return NextResponse.json(work);
 }
 
@@ -52,6 +58,12 @@ export async function DELETE(
     return NextResponse.json({ error: "Nepřihlášen." }, { status: 401 });
 
   const { id } = await params;
-  await deleteWork(id);
+  try {
+    await deleteWork(id);
+  } catch (err) {
+    console.error("[works] deleteWork error:", err);
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: `Chyba při mazání: ${message}` }, { status: 500 });
+  }
   return NextResponse.json({ ok: true });
 }
