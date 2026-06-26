@@ -47,10 +47,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { put } = await import("@vercel/blob");
-    const blob = await put(`works/${Date.now()}.${ext}`, file, {
-      access: "public",
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-    });
+    const blob = await put(`works/${Date.now()}.${ext}`, file, { access: "public" });
     return NextResponse.json({ url: blob.url });
 
   } catch (err) {
