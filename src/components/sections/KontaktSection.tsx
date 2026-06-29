@@ -121,6 +121,10 @@ export default function KontaktSection() {
               <a href="tel:+420603162571" className="text-xs text-white/30 hover:text-white/60 transition-colors duration-200">
                 +420 603 162 571
               </a>
+              <span className="text-white/10">·</span>
+              <a href="https://www.instagram.com/vtp_trcka/" target="_blank" rel="noopener noreferrer" className="text-xs text-white/30 hover:text-white/60 transition-colors duration-200">
+                Instagram
+              </a>
             </div>
           </div>
           <div className="mt-4 pt-4 border-t border-white/[0.04]">
