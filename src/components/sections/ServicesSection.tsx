@@ -80,8 +80,8 @@ const serviceLinks = services.filter((s) => !s.cta);
 const ctaService   = services.find((s) => s.cta);
 
 export default function ServicesSection() {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const active = serviceLinks[activeIdx];
+  const [activeIdx, setActiveIdx] = useState<number>(0);
+  const active = serviceLinks[activeIdx] ?? serviceLinks[0];
 
   const { ref: headRef, inView: headInView } = useInView<HTMLDivElement>();
   const { ref: bodyRef, inView: bodyInView } = useInView<HTMLDivElement>();
@@ -117,7 +117,7 @@ export default function ServicesSection() {
                 <div key={s.slug} className="bg-black border border-[#1a1a1a] overflow-hidden">
                   {/* Accordion header */}
                   <button
-                    onClick={() => setActiveIdx(i)}
+                    onClick={() => setActiveIdx(isOpen ? -1 : i)}
                     aria-expanded={isOpen}
                     className={`w-full flex items-center gap-4 px-5 py-4 border-l-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f06820]/60 ${
                       isOpen ? "border-[#f06820]" : "border-transparent"

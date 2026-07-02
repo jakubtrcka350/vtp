@@ -1,10 +1,16 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
 import { useInView } from "@/hooks/useInView";
+import { services } from "@/lib/services";
+
+const serviceLinks = services.filter((s) => !s.cta);
 
 export default function KontaktSection() {
   const { ref: headRef, inView: headInView } = useInView<HTMLDivElement>();
   const { ref: blocksRef, inView: blocksInView } = useInView<HTMLDivElement>();
+  const [sluzbyOpen, setSluzbyOpen] = useState(false);
 
   return (
     <footer id="kontakt" className="border-t border-[#e5e5e5]">
@@ -95,10 +101,9 @@ export default function KontaktSection() {
             </div>
 
             {/* Quick nav */}
-            <nav className="flex flex-wrap gap-x-6 gap-y-2">
+            <nav className="flex flex-wrap gap-x-6 gap-y-2 items-start">
               {[
                 { label: "Poptávka", href: "#poptavka" },
-                { label: "Služby", href: "#sluzby" },
                 { label: "O nás", href: "#o-nas" },
                 { label: "Kontakt", href: "#kontakt" },
               ].map((l) => (
@@ -106,6 +111,38 @@ export default function KontaktSection() {
                   {l.label}
                 </a>
               ))}
+
+              {/* Služby — expandable */}
+              <div className="flex flex-col gap-1">
+                <button
+                  onClick={() => setSluzbyOpen((o) => !o)}
+                  className="flex items-center gap-1.5 text-xs text-white/40 hover:text-white/80 transition-colors duration-200"
+                >
+                  Služby
+                  <svg
+                    className={`w-2.5 h-2.5 transition-transform duration-200 ${sluzbyOpen ? "rotate-180" : ""}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div className={`overflow-hidden transition-all duration-300 ${sluzbyOpen ? "max-h-96" : "max-h-0"}`}>
+                  <ul className="flex flex-col gap-1 mt-1">
+                    {serviceLinks.map((s) => (
+                      <li key={s.slug}>
+                        <Link
+                          href={`/sluzby/${s.slug}`}
+                          className="text-xs text-white/30 hover:text-white/70 transition-colors duration-200"
+                        >
+                          {s.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </nav>
           </div>
 

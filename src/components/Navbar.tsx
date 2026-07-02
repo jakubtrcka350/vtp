@@ -229,7 +229,7 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen((o) => !o)}
-            className="lg:hidden p-3 text-white hover:text-[#777777] transition-colors"
+            className="lg:hidden p-4 -mr-4 text-white hover:text-[#777777] transition-colors"
             aria-label={menuOpen ? "Zavřít menu" : "Otevřít menu"}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
